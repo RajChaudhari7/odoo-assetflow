@@ -34,10 +34,6 @@ const Navbar = () => {
           />
 
           <div>
-            <h4 className="font-semibold text-gray-700">
-              Aksha
-            </h4>
-
             <p className="text-xs text-gray-500">
               Asset Manager
             </p>
