@@ -30,9 +30,11 @@ export const createDepartment = asyncHandler(async (req, res) => {
     });
 
     return res.status(201).json(
-
-        new ApiResponse(201), department, "Department create successfully"
-
+        new ApiResponse(
+            201,
+            department,
+            "Department created successfully"
+        )
     );
 
 });
@@ -52,11 +54,20 @@ export const getDepartments = asyncHandler(async (req, res) => {
 // api to get department By ID
 export const getDepartmentId = asyncHandler(async (req, res) => {
 
-    const department = await Department.findById(req.params.id).populate("head", "fullName email");
+    const department = await Department.findById(req.params.id)
+        .populate("head", "fullName email");
 
     if (!department) {
         throw new ApiError(404, "Department not found");
-    };
+    }
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            department,
+            "Department fetched successfully"
+        )
+    );
 
 });
 
