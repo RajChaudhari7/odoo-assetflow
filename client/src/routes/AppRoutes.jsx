@@ -8,6 +8,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Department from "../pages/department/Departments";
 import Users from "../pages/users/Users";
 import Assets from "../pages/assets/Assets";
+import Allocations from "../pages/allocations/Allocations";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AuthLayout from "../layouts/AuthLayout";
@@ -53,6 +54,11 @@ const AppRoutes = () => {
             <Route
               path="/assets"
               element={<Assets/>}
+            />
+
+            <Route
+              path="/allocations"
+              element={<Allocations/>}
             />
 
           </Route>
