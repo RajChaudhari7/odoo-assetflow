@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../services/authService";
+
 import InputField from "../../components/forms/InputField";
 import PasswordInput from "../../components/forms/PasswordInput";
 
@@ -9,6 +12,8 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate()
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,11 +21,27 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log(formData);
-  };
+  try {
+    const data = await loginUser(formData);
+
+    console.log(data);
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    navigate("/dashboard");
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message || "Login failed"
+    );
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
