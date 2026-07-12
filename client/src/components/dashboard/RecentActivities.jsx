@@ -1,57 +1,103 @@
+import { useEffect, useState } from "react";
 import { Activity } from "lucide-react";
-
-const activities = [
-  {
-    id: 1,
-    message: "Raj added a new asset",
-    time: "10 min ago",
-  },
-  {
-    id: 2,
-    message: "Aksha allocated Dell Laptop",
-    time: "30 min ago",
-  },
-  {
-    id: 3,
-    message: "Printer sent for maintenance",
-    time: "1 hour ago",
-  },
-  {
-    id: 4,
-    message: "New employee registered",
-    time: "2 hours ago",
-  },
-];
+import api from "../../services/api";
 
 const RecentActivities = () => {
+
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchActivities = async () => {
+
+    try {
+
+      const { data } = await api.get("/dashboard/recent-allocations");
+
+      setActivities(data.allocations);
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+    fetchActivities();
+  }, []);
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+
       <h2 className="text-lg font-semibold mb-4">
         Recent Activities
       </h2>
 
-      <div className="space-y-4">
-        {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="flex items-start gap-3 border-b pb-3 last:border-b-0"
-          >
-            <div className="bg-emerald-100 p-2 rounded-full">
-              <Activity size={18} className="text-emerald-600" />
+      {loading ? (
+
+        <p>Loading...</p>
+
+      ) : activities.length === 0 ? (
+
+        <p className="text-gray-500">
+          No Recent Activities
+        </p>
+
+      ) : (
+
+        <div className="space-y-4">
+
+          {activities.map((activity) => (
+
+            <div
+              key={activity._id}
+              className="flex items-start gap-3 border-b pb-3 last:border-b-0"
+            >
+
+              <div className="bg-emerald-100 p-2 rounded-full">
+
+                <Activity
+                  size={18}
+                  className="text-emerald-600"
+                />
+
+              </div>
+
+              <div>
+
+                <p className="text-gray-700 font-medium">
+
+                  {activity.asset?.assetName}
+
+                  {" "}allocated to{" "}
+
+                  {activity.employee?.fullName}
+
+                </p>
+
+                <p className="text-sm text-gray-500">
+
+                  {new Date(
+                    activity.allocationDate
+                  ).toLocaleDateString()}
+
+                </p>
+
+              </div>
+
             </div>
 
-            <div>
-              <p className="text-gray-700 font-medium">
-                {activity.message}
-              </p>
+          ))}
 
-              <p className="text-sm text-gray-500">
-                {activity.time}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
+        </div>
+
+      )}
+
     </div>
   );
 };
