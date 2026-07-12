@@ -11,6 +11,8 @@ import departmentRoutes from "./routes/departmentRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import assetRoutes from "./routes/assetRoutes.js";
+import allocationRoutes from "./routes/allocationRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 
 
@@ -35,6 +37,8 @@ app.use("/api/departments", departmentRoutes)
 app.use("/api/users", userRoutes)
 app.use("/api/categories", categoryRoutes)
 app.use("/api/assets",assetRoutes)
+app.use("/api/allocations",allocationRoutes)
+app.use("/api/dashboard", dashboardRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

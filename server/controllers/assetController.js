@@ -84,17 +84,60 @@ export const createAsset = async (req, res) => {
 
 // get all assets
 export const getAssets = async (req, res) => {
-
     try {
 
-        const assets = await Asset.find()
+        const {
+            search,
+            category,
+            department,
+            status,
+            condition,
+            page = 1,
+            limit = 10
+        } = req.query;
+
+        const query = {};
+
+        // Search by Asset Name, Asset ID, Serial Number
+        if (search) {
+            query.$or = [
+                { assetName: { $regex: search, $options: "i" } },
+                { assetId: { $regex: search, $options: "i" } },
+                { serialNumber: { $regex: search, $options: "i" } },
+            ];
+        }
+
+        if (category) {
+            query.category = category;
+        }
+
+        if (department) {
+            query.department = department;
+        }
+
+        if (status) {
+            query.status = status;
+        }
+
+        if (condition) {
+            query.condition = condition;
+        }
+
+        const total = await Asset.countDocuments(query);
+
+        const assets = await Asset.find(query)
             .populate("category", "name")
             .populate("department", "name")
-            .populate("assignedTo", "fullName employeeId email");
+            .populate("assignedTo", "fullName employeeId")
+            .skip((page - 1) * limit)
+            .limit(Number(limit))
+            .sort({ createdAt: -1 });
 
         res.status(200).json({
             success: true,
-            count: assets.length,
+            total,
+            page: Number(page),
+            pages: Math.ceil(total / limit),
             assets
         });
 
@@ -106,7 +149,6 @@ export const getAssets = async (req, res) => {
         });
 
     }
-
 };
 
 // get asset by id
