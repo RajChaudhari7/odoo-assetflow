@@ -1,13 +1,26 @@
-import express from "express"
-import { createAsset } from "../controllers/assetController.js"
+import express from "express";
+
+import {
+    createAsset,
+    getAssets,
+    getAsset,
+    updateAsset,
+    deleteAsset
+} from "../controllers/assetController.js";
+
 import protect from "../middleware/authMiddleware.js";
 import authorize from "../middleware/roleMiddleware.js";
-import upload from "../middleware/uploadMiddleware.js";
 
+const router = express.Router();
 
-const assetRoutes = express.Router();
+router.post("/", protect, authorize("Asset Manager"), createAsset);
 
-assetRoutes.post("/", protect, authorize("Asset Manager"), upload.single("image"), createAsset);
+router.get("/", protect, getAssets);
 
+router.get("/:id", protect, getAsset);
 
-export default assetRoutes;
+router.put("/:id", protect, authorize("Asset Manager"), updateAsset);
+
+router.delete("/:id", protect, authorize("Asset Manager"), deleteAsset);
+
+export default router;

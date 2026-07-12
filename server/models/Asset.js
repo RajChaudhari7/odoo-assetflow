@@ -49,11 +49,6 @@ const assetSchema = new mongoose.Schema(
 
         warrantyExpiry: Date,
 
-        image: {
-            type: String,
-            default: "",
-        },
-
         condition: {
             type: String,
             enum: [
