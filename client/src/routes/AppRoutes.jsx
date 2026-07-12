@@ -4,6 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
+import Department from "../pages/department/Departments";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AuthLayout from "../layouts/AuthLayout";
@@ -29,6 +30,11 @@ const AppRoutes = () => {
             <Route
               path="/dashboard"
               element={<Dashboard />}
+            />
+
+            <Route
+              path="/departments"
+              element={<Department />}
             />
 
           </Route>
