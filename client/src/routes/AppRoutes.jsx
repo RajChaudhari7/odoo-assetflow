@@ -6,6 +6,8 @@ import Category from "../pages/categories/Category";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Department from "../pages/department/Departments";
+import Users from "../pages/users/Users";
+import Assets from "../pages/assets/Assets";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import AuthLayout from "../layouts/AuthLayout";
@@ -41,6 +43,16 @@ const AppRoutes = () => {
             <Route
               path="/categories"
               element={<Category />}
+            />
+
+            <Route
+              path="/employees"
+              element={<Users />}
+            />
+
+            <Route
+              path="/assets"
+              element={<Assets/>}
             />
 
           </Route>
