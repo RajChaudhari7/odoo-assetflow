@@ -1,4 +1,5 @@
 import StatsGrid from "../../components/dashboard/StatsGrid";
+import RecentAssets from "../../components/dashboard/RecentAssets";
 
 const Dashboard = () => {
   return (
@@ -17,6 +18,8 @@ const Dashboard = () => {
       </div>
 
       <StatsGrid />
+
+      <RecentAssets />
 
     </div>
   );
