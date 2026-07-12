@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -8,8 +7,10 @@ import authRoutes from "./routes/authRoutes.js";
 import errorHandler from "./middleware/errorMiddleware.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import assetRoutes from "./routes/assetRoutes.js";
 
-dotenv.config();
+
 
 connectDB();
 
@@ -30,6 +31,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes)
 app.use("/api/departments", departmentRoutes)
 app.use("/api/users", userRoutes)
+app.use("/api/categories", categoryRoutes)
+app.use("/api/assets",assetRoutes)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
