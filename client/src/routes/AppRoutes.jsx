@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 
+import Category from "../pages/categories/Category";
 import Login from "../pages/auth/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Department from "../pages/department/Departments";
@@ -35,6 +36,11 @@ const AppRoutes = () => {
             <Route
               path="/departments"
               element={<Department />}
+            />
+
+            <Route
+              path="/categories"
+              element={<Category />}
             />
 
           </Route>

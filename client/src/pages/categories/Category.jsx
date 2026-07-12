@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
-import { deleteDepartment } from "../../services/departmentService";
+import {
+  getCategories,
+  deleteCategory,
+} from "../../services/categoryService";
+import CategoryModal from "../../components/categories/CategoryModal";
 
-import { getDepartments } from "../../services/departmentService";
-import DepartmentModal from "../../components/departments/DepartmentModal";
+const Category = () => {
 
-const Department = () => {
-
-  const [departments, setDepartments] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
-    fetchDepartments();
+    fetchCategories();
   }, []);
 
-  const fetchDepartments = async () => {
+  const fetchCategories = async () => {
     try {
 
-      const data = await getDepartments();
+      const data = await getCategories();
 
-      setDepartments(data.data);
+      setCategories(data.categories);
 
     } catch (error) {
 
@@ -33,23 +33,24 @@ const Department = () => {
   const handleDelete = async (id) => {
 
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this department?"
+      "Are you sure you want to delete this category?"
     );
 
     if (!confirmDelete) return;
 
     try {
 
-      await deleteDepartment(id);
+      await deleteCategory(id);
 
-      toast.success("Department deleted successfully");
+      toast.success("Category deleted successfully");
 
-      fetchDepartments();
+      fetchCategories();
 
     } catch (error) {
 
       toast.error(
-        error.response?.data?.message || "Failed to delete department"
+        error.response?.data?.message ||
+        "Failed to delete category"
       );
 
     }
@@ -64,23 +65,23 @@ const Department = () => {
         <div>
 
           <h1 className="text-3xl font-bold">
-            Departments
+            Categories
           </h1>
 
           <p className="text-gray-500 mt-1">
-            Manage all departments
+            Manage Asset Categories
           </p>
 
         </div>
 
         <button
           onClick={() => {
-            setSelectedDepartment(null);
+            setSelectedCategory(null);
             setOpenModal(true);
           }}
           className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg"
         >
-          + Add Department
+          + Add Category
         </button>
 
       </div>
@@ -88,29 +89,29 @@ const Department = () => {
       <div className="space-y-4">
 
         {
-          departments.length === 0 ? (
+          categories.length === 0 ? (
 
             <p className="text-gray-500">
-              No departments found.
+              No Categories Found
             </p>
 
           ) : (
 
-            departments.map((department) => (
+            categories.map((category) => (
 
               <div
-                key={department._id}
-                className="bg-white border rounded-lg shadow-sm p-5 flex justify-between items-center"
+                key={category._id}
+                className="bg-white rounded-lg shadow-sm border p-5 flex justify-between items-center"
               >
 
                 <div>
 
-                  <h2 className="text-lg font-semibold">
-                    {department.name}
+                  <h2 className="font-semibold text-lg">
+                    {category.name}
                   </h2>
 
                   <p className="text-gray-500">
-                    {department.description}
+                    {category.description}
                   </p>
 
                 </div>
@@ -119,17 +120,19 @@ const Department = () => {
 
                   <button
                     onClick={() => {
-                      setSelectedDepartment(department);
+                      setSelectedCategory(category);
                       setOpenModal(true);
                     }}
-                    className="px-4 py-2 rounded bg-blue-600 text-white"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
                   >
                     Edit
                   </button>
 
                   <button
-                    onClick={() => handleDelete(department._id)}
-                    className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white"
+                    onClick={() =>
+                      handleDelete(category._id)
+                    }
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
                   >
                     Delete
                   </button>
@@ -145,15 +148,15 @@ const Department = () => {
 
       </div>
 
-      <DepartmentModal
+      <CategoryModal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        fetchDepartments={fetchDepartments}
-        department={selectedDepartment}
+        fetchCategories={fetchCategories}
+        category={selectedCategory}
       />
 
     </div>
   );
 };
 
-export default Department;
+export default Category;
