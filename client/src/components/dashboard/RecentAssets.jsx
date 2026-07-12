@@ -1,23 +1,5 @@
-const assets = [
-  {
-    id: 1,
-    name: "Dell Latitude 5420",
-    category: "Laptop",
-    status: "Available",
-  },
-  {
-    id: 2,
-    name: "HP LaserJet Pro",
-    category: "Printer",
-    status: "Allocated",
-  },
-  {
-    id: 3,
-    name: "Epson Projector",
-    category: "Projector",
-    status: "Maintenance",
-  },
-];
+import { useEffect, useState } from "react";
+import api from "../../services/api";
 
 const getStatusColor = (status) => {
   switch (status) {
@@ -30,12 +12,43 @@ const getStatusColor = (status) => {
     case "Maintenance":
       return "bg-red-100 text-red-700";
 
+    case "Retired":
+      return "bg-gray-200 text-gray-700";
+
     default:
       return "bg-gray-100 text-gray-700";
   }
 };
 
 const RecentAssets = () => {
+
+  const [assets, setAssets] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchAssets = async () => {
+
+    try {
+
+      const { data } = await api.get("/dashboard/recent-assets");
+
+      setAssets(data.assets);
+
+    } catch (error) {
+
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+  useEffect(() => {
+    fetchAssets();
+  }, []);
+
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 mt-8">
 
@@ -45,49 +58,55 @@ const RecentAssets = () => {
         </h2>
       </div>
 
-      <table className="w-full">
+      {loading ? (
+        <p className="p-6">Loading...</p>
+      ) : (
+        <table className="w-full">
 
-        <thead>
+          <thead>
 
-          <tr className="text-left border-b">
+            <tr className="text-left border-b">
 
-            <th className="p-4">Asset</th>
+              <th className="p-4">Asset</th>
 
-            <th className="p-4">Category</th>
+              <th className="p-4">Category</th>
 
-            <th className="p-4">Status</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          {assets.map((asset) => (
-
-            <tr key={asset.id} className="border-b hover:bg-gray-50">
-
-              <td className="p-4">{asset.name}</td>
-
-              <td className="p-4">{asset.category}</td>
-
-              <td className="p-4">
-
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(asset.status)}`}
-                >
-                  {asset.status}
-                </span>
-
-              </td>
+              <th className="p-4">Status</th>
 
             </tr>
 
-          ))}
+          </thead>
 
-        </tbody>
+          <tbody>
 
-      </table>
+            {assets.map((asset) => (
+
+              <tr key={asset._id} className="border-b hover:bg-gray-50">
+
+                <td className="p-4">{asset.assetName}</td>
+
+                <td className="p-4">
+                  {asset.category?.name}
+                </td>
+
+                <td className="p-4">
+
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(asset.status)}`}
+                  >
+                    {asset.status}
+                  </span>
+
+                </td>
+
+              </tr>
+
+            ))}
+
+          </tbody>
+
+        </table>
+      )}
 
     </div>
   );
