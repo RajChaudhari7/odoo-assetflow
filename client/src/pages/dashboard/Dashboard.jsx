@@ -1,26 +1,25 @@
-import Sidebar from "../../components/layout/Sidebar";
-import Navbar from "../../components/layout/Navbar";
+import StatsGrid from "../../components/dashboard/StatsGrid";
+
 const Dashboard = () => {
   return (
-    <div className="flex">
-      <Sidebar />
+    <div>
 
-      <div className="flex-1">
+      <div className="mb-8">
 
-        <Navbar />
+        <h1 className="text-3xl font-bold text-gray-800">
+          Dashboard
+        </h1>
 
-        <div className="p-8">
-          <h1 className="text-3xl font-bold">
-            Dashboard
-          </h1>
+        <p className="text-gray-500 mt-2">
+          Welcome to AssetFlow ERP
+        </p>
 
-          <p className="text-gray-500 mt-2">
-            Welcome to AssetFlow
-          </p>
-        </div>
       </div>
+
+      <StatsGrid />
+
     </div>
-      );
+  );
 };
 
-      export default Dashboard;
+export default Dashboard;
