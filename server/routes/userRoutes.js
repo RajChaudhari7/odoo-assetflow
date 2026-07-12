@@ -9,6 +9,6 @@ const userRoutes = express.Router();
 userRoutes.get("/", protect, getEmployees);
 userRoutes.get("/:id", protect, getEmployee);
 userRoutes.put("/:id", protect, authorize("Asset Manager"), updateEmployee);
-userRoutes.delete("/:id", protect, authorize, deleteEmployee);
+userRoutes.delete("/:id", protect, authorize("Asset Manager"), deleteEmployee);
 
 export default userRoutes;

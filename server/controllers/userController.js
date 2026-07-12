@@ -28,34 +28,32 @@ export const getEmployees = async (req, res) => {
 
 // api to get single employee
 export const getEmployee = async (req, res) => {
-
     try {
 
-        const user = await User.findById(req.params.id).select("-password").populate("department", "name");
+        const user = await User.findById(req.params.id)
+            .select("-password")
+            .populate("department", "name");
 
         if (!user) {
-
             return res.status(404).json({
                 success: false,
                 message: "Employee not found"
             });
-
-            res.status(200).json({
-                success: true,
-                user
-            });
-
         }
+
+        res.status(200).json({
+            success: true,
+            user
+        });
 
     } catch (error) {
 
         res.status(500).json({
             success: false,
             message: error.message
-        })
+        });
 
     }
-
 };
 
 // api to update employee
